@@ -14,7 +14,18 @@ Full Internationalization: Complete support for English (EN) and Serbian (SR) la
 Responsive Performance: Optimized for all devices, from high-end desktops to mobile screens.
 
 Fluid Animations: Powered by Framer Motion to create natural, "water-like" transitions.
+<img width="1168" height="784" alt="image (4)" src="https://github.com/user-attachments/assets/b649101b-9caa-43c6-b86e-c55d00ad50dd" />
+
+<img width="1898" height="732" alt="xx" src="https://github.com/user-attachments/assets/bf335adc-8ceb-4e89-a5c4-5cf283b3ebea" />
+
+<img width="1898" height="732" alt="xx" src="https://github.com/user-attachments/assets/731f3fce-6873-4999-a9e3-a36663512686" />
+
+<img width="1873" height="727" alt="xxx" src="https://github.com/user-attachments/assets/5050ecc3-3841-4c23-a8d3-b5bc5b967fd9" />
+
+<img width="1877" height="727" alt="xxxx" src="https://github.com/user-attachments/assets/c4d15986-146d-40a6-8e0f-9db85b6b3873" />
+
 <img width="1248" height="832" alt="image (2)" src="https://github.com/user-attachments/assets/71259454-68cb-45ba-9499-d530337df572" />
+<img width="1880" height="723" alt="xxxxxxxxx" src="https://github.com/user-attachments/assets/d15e87d2-b365-4d94-b1a6-36338efb4e27" />
 
 🛠️ Technical Stack
 Frontend: React.js & Vite
