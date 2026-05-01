@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS — Innovative Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold:#d4a853;--gold-light:#f0c875;--gold-dim:#8a6a2a;
+    --purple:#1a0a2e;--purple-mid:#2d1b5e;
+    --orange:#e8722a;--blue:#4a9fd4;--cream:#f5ead8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--purple);color:var(--cream);font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:none;}
+
+  /* CURSOR */
+  #cur{width:18px;height:18px;border:2px solid var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .08s,border-color .3s;mix-blend-mode:screen;}
+  #cur-dot{width:5px;height:5px;background:var(--gold-light);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:10000;transform:translate(-50%,-50%);}
+  #cur-trail{width:42px;height:42px;border:1px solid var(--gold-dim);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .22s ease;opacity:.35;}
+  #ptc{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.4rem 3rem;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(26,10,46,.85),transparent);transition:background .5s,backdrop-filter .5s;}
+  nav.sc{background:rgba(26,10,46,.93);backdrop-filter:blur(20px);border-bottom:1px solid rgba(212,168,83,.15);}
+  .logo{font-family:'Cinzel Decorative',serif;font-size:1.4rem;font-weight:700;background:linear-gradient(135deg,var(--gold-light),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:.1em;}
+  .nav-r{display:flex;align-items:center;gap:2.5rem;}
+  .nav-links{display:flex;gap:2rem;list-style:none;}
+  .nav-links a{font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(245,234,216,.6);text-decoration:none;cursor:none;transition:color .3s;position:relative;}
+  .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s;}
+  .nav-links a:hover{color:var(--gold-light);}
+  .nav-links a:hover::after{width:100%;}
+  .lt{display:flex;align-items:center;border:1px solid rgba(212,168,83,.4);overflow:hidden;}
+  .lb{padding:.4rem .9rem;font-family:'Rajdhani',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);background:transparent;border:none;cursor:none;transition:all .3s;}
+  .lb.on{background:linear-gradient(135deg,rgba(212,168,83,.25),rgba(212,168,83,.1));color:var(--gold-light);}
+  .ls{width:1px;height:20px;background:rgba(212,168,83,.3);}
+
+  /* SECTION SYSTEM */
+  .sw{position:relative;overflow:hidden;}
+  .sbg{position:absolute;inset:0;z-index:0;}
+  .sbg video,.sbg img{width:100%;height:100%;object-fit:cover;}
+  .sov{position:absolute;inset:0;}
+  .sc2{position:relative;z-index:2;}
+
+  /* HERO */
+  .hero{height:100vh;display:flex;align-items:center;justify-content:center;}
+  .hero .sov{background:linear-gradient(to bottom,rgba(26,10,46,.25) 0%,rgba(26,10,46,.1) 40%,rgba(26,10,46,.65) 80%,rgba(26,10,46,1) 100%);}
+  .hero-c{text-align:center;padding:0 2rem;}
+  .h-eye{font-size:.82rem;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;margin-bottom:1.5rem;opacity:0;transform:translateY(20px);animation:fu 1s forwards .5s;}
+  .h-title{font-family:'Cinzel Decorative',serif;font-size:clamp(3.5rem,10vw,9rem);font-weight:900;line-height:.9;background:linear-gradient(135deg,var(--cream) 30%,var(--gold-light) 60%,var(--orange) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;opacity:0;transform:translateY(40px);animation:fu 1.2s forwards .8s;}
+  .h-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.5vw,1.6rem);font-weight:300;font-style:italic;color:rgba(245,234,216,.75);margin-top:1.5rem;letter-spacing:.1em;opacity:0;transform:translateY(20px);animation:fu 1s forwards 1.2s;}
+  .h-cta{margin-top:3rem;display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap;opacity:0;animation:fu 1s forwards 1.7s;}
+  .si{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:.5rem;opacity:0;animation:fu 1s forwards 2s;}
+  .si span{font-size:.68rem;letter-spacing:.4em;color:var(--gold-dim);text-transform:uppercase;}
+  .sl{width:1px;height:50px;background:linear-gradient(to bottom,var(--gold),transparent);animation:pulse 2s ease-in-out infinite;}
+
+  /* BUTTONS */
+  .bg{padding:.95rem 2.5rem;border:1px solid var(--gold);background:linear-gradient(135deg,rgba(212,168,83,.18),rgba(212,168,83,.04));color:var(--gold-light);font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;text-decoration:none;cursor:none;transition:all .4s;display:inline-block;}
+  .bg:hover{box-shadow:0 0 35px rgba(212,168,83,.35);letter-spacing:.42em;}
+  .bgh{padding:.95rem 2.5rem;border:1px solid rgba(245,234,216,.2);background:transparent;color:rgba(245,234,216,.6);font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;text-decoration:none;cursor:none;transition:all .4s;display:inline-block;}
+  .bgh:hover{border-color:rgba(245,234,216,.5);color:var(--cream);}
+
+  /* SECTION TEXT */
+  .stag{font-size:.75rem;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:1rem;}
+  .stag .ln{width:40px;height:1px;background:var(--gold);flex-shrink:0;}
+  .stitle{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,5vw,3.8rem);font-weight:700;line-height:1.1;margin-bottom:1.5rem;background:linear-gradient(135deg,var(--cream),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .sbody{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;line-height:1.85;color:rgba(245,234,216,.7);}
+
+  /* VISION — 1.png */
+  .vision{min-height:100vh;display:flex;align-items:center;padding:8rem 0;}
+  .vision .sov{background:linear-gradient(105deg,rgba(26,10,46,.93) 0%,rgba(26,10,46,.65) 55%,rgba(26,10,46,.2) 100%);}
+  .v-con{padding:0 8vw;max-width:680px;}
+
+  /* STATS — 2a.png */
+  .stats{padding:7rem 8vw;}
+  .stats .sov{background:linear-gradient(to bottom,rgba(26,10,46,.88),rgba(26,10,46,.78));}
+  .stats .sbg img{opacity:.4;}
+  .sg{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:4rem;}
+  .sc3{padding:3rem 1.5rem;text-align:center;background:rgba(26,10,46,.5);border:1px solid rgba(212,168,83,.1);backdrop-filter:blur(10px);transition:all .4s;}
+  .sc3:hover{background:rgba(212,168,83,.07);border-color:rgba(212,168,83,.35);transform:translateY(-5px);}
+  .sn{font-family:'Cinzel Decorative',serif;font-size:clamp(2.5rem,4.5vw,3.8rem);font-weight:900;background:linear-gradient(135deg,var(--gold-light),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;line-height:1;}
+  .ss{font-family:'Cinzel Decorative',serif;font-size:1.4rem;background:linear-gradient(135deg,var(--gold-light),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .sl2{font-size:.78rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold-dim);margin-top:.75rem;display:block;}
+
+  /* SERVICES — 2.mp4 */
+  .services{padding:8rem 8vw;}
+  .services .sov{background:linear-gradient(to bottom,rgba(26,10,46,.9),rgba(26,10,46,.82));}
+  .services .sbg video{opacity:.38;}
+  .sh{text-align:center;margin-bottom:5rem;}
+  .svgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+  .svc{padding:3rem 2.5rem;background:rgba(255,255,255,.025);border:1px solid rgba(212,168,83,.1);transition:all .5s;position:relative;overflow:hidden;cursor:none;}
+  .svc::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--orange));transition:width .5s;}
+  .svc:hover{background:rgba(212,168,83,.06);border-color:rgba(212,168,83,.3);transform:translateY(-5px);}
+  .svc:hover::after{width:100%;}
+  .si2{font-size:2rem;margin-bottom:1.5rem;display:block;}
+  .sn2{font-family:'Cinzel Decorative',serif;font-size:.95rem;font-weight:700;color:var(--gold-light);margin-bottom:.3rem;line-height:1.4;}
+  .sr2{font-size:.68rem;letter-spacing:.2em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:1rem;display:block;}
+  .sd{font-family:'Cormorant Garamond',serif;font-size:1.05rem;line-height:1.7;color:rgba(245,234,216,.5);}
+
+  /* PLATFORM — 3.mp4 */
+  .platform{min-height:100vh;display:flex;align-items:center;padding:8rem 0;}
+  .platform .sov{background:linear-gradient(-105deg,rgba(26,10,46,.93) 0%,rgba(26,10,46,.55) 50%,rgba(26,10,46,.15) 100%);}
+  .p-con{padding:0 8vw;margin-left:auto;max-width:680px;text-align:right;}
+  .p-con .stag{flex-direction:row-reverse;justify-content:flex-end;}
+  .p-con .stag .ln:first-child{display:none;}
+
+  /* SCREENSHOT — screenshot bg */
+  .ssec{padding:8rem 8vw;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;}
+  .ssec .sov{background:linear-gradient(to bottom,rgba(26,10,46,.82),rgba(26,10,46,.95));}
+  .ssec .sbg img{opacity:.28;filter:saturate(1.6);}
+  .ss-img{width:100%;border:1px solid rgba(212,168,83,.25);box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 60px rgba(212,168,83,.12);animation:fl 6s ease-in-out infinite,gl 4s ease-in-out infinite;}
+
+  /* CONTACT — 4.mp4 */
+  .contact{padding:10rem 8vw;text-align:center;}
+  .contact .sov{background:linear-gradient(to bottom,rgba(26,10,46,.7),rgba(26,10,46,.95));}
+  .contact .sbg video{opacity:.35;}
+  .ct{font-family:'Cinzel Decorative',serif;font-size:clamp(2.2rem,7vw,6rem);font-weight:900;line-height:1.05;background:linear-gradient(135deg,var(--cream),var(--gold-light),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1.5rem;}
+  .cs{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;font-style:italic;color:rgba(245,234,216,.55);margin-bottom:3rem;}
+  .ce{font-family:'Rajdhani',sans-serif;font-size:.9rem;letter-spacing:.4em;color:var(--gold);text-decoration:none;text-transform:uppercase;cursor:none;display:inline-block;padding:1.2rem 3rem;border:1px solid var(--gold-dim);transition:all .4s;margin-top:1rem;}
+  .ce:hover{color:var(--gold-light);border-color:var(--gold);box-shadow:0 0 40px rgba(212,168,83,.25);}
+
+  .div{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.25;}
+
+  footer{padding:2rem 8vw;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(212,168,83,.1);position:relative;z-index:2;}
+  footer p{font-size:.72rem;letter-spacing:.2em;color:rgba(245,234,216,.25);text-transform:uppercase;}
+  .fl{font-family:'Cinzel Decorative',serif;font-size:1rem;font-weight:700;background:linear-gradient(135deg,var(--gold-dim),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+  /* REVEAL */
+  .rv,.rvl,.rvr{transition:opacity .9s ease,transform .9s ease;}
+  .rv{opacity:0;transform:translateY(50px);}
+  .rvl{opacity:0;transform:translateX(-60px);}
+  .rvr{opacity:0;transform:translateX(60px);}
+  .rv.on,.rvl.on,.rvr.on{opacity:1;transform:none;}
+  .d1{transition-delay:.1s}.d2{transition-delay:.25s}.d3{transition-delay:.4s}
+  .d4{transition-delay:.55s}.d5{transition-delay:.7s}.d6{transition-delay:.85s}
+
+  @keyframes fu{to{opacity:1;transform:translateY(0)}}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3;transform:scaleY(.7)}}
+  @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  @keyframes gl{0%,100%{box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 40px rgba(212,168,83,.1)}50%{box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 80px rgba(212,168,83,.3)}}
+
+  /* LANGUAGE */
+  [data-sr]{display:none;}
+  body.sr [data-en]{display:none;}
+  body.sr [data-sr]{display:block;}
+  span[data-sr]{display:none;}
+  body.sr span[data-en]{display:none;}
+  body.sr span[data-sr]{display:inline;}
+
+  @media(max-width:900px){
+    nav{padding:1.2rem 1.5rem;}
+    .nav-links{display:none;}
+    .sg{grid-template-columns:repeat(2,1fr);}
+    .svgrid{grid-template-columns:1fr;}
+    .ssec{grid-template-columns:1fr;gap:3rem;}
+    .p-con{margin-left:0;text-align:left;}
+    .p-con .stag{flex-direction:row;}
+    .p-con .stag .ln:first-child{display:block;}
+  }
+</style>
+</head>
+<body>
+
+<div id="cur-trail"></div>
+<div id="cur"></div>
+<div id="cur-dot"></div>
+<canvas id="ptc"></canvas>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="logo">NEXUS</div>
+  <div class="nav-r">
+    <ul class="nav-links">
+      <li><a href="#vision"><span data-en>Vision</span><span data-sr>Vizija</span></a></li>
+      <li><a href="#numbers"><span data-en>Numbers</span><span data-sr>Brojevi</span></a></li>
+      <li><a href="#services"><span data-en>Services</span><span data-sr>Usluge</span></a></li>
+      <li><a href="#platform"><span data-en>Platform</span><span data-sr>Platforma</span></a></li>
+      <li><a href="#contact"><span data-en>Contact</span><span data-sr>Kontakt</span></a></li>
+    </ul>
+    <div class="lt">
+      <button class="lb on" id="ben">EN</button>
+      <div class="ls"></div>
+      <button class="lb" id="bsr">SR</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ══ HERO — 4.mp4 ══ -->
+<section class="sw hero">
+  <div class="sbg">
+    <video autoplay muted loop playsinline id="hv">
+      <source src="video/4.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="sov"></div>
+  <div class="sc2 hero-c">
+    <div class="h-eye"><span data-en>Innovative Solutions</span><span data-sr>Inovativna Rešenja</span></div>
+    <h1 class="h-title">NEXUS</h1>
+    <p class="h-sub"><span data-en>Where Vision Meets the Infinite</span><span data-sr>Gde Vizija Susreće Beskraj</span></p>
+    <div class="h-cta">
+      <a href="#vision" class="bg"><span data-en>Discover</span><span data-sr>Otkrijte</span></a>
+      <a href="#contact" class="bgh"><span data-en>Connect</span><span data-sr>Povežite Se</span></a>
+    </div>
+  </div>
+  <div class="si">
+    <span><span data-en>Scroll</span><span data-sr>Skroluj</span></span>
+    <div class="sl"></div>
+  </div>
+</section>
+
+<!-- ══ VISION — 1.png ══ -->
+<section class="sw vision" id="vision">
+  <div class="sbg"><video autoplay muted loop playsinline><source src="video/2.mp4" type="video/mp4"></video></div>
+  <div class="sov"></div>
+  <div class="sc2 v-con">
+    <div class="stag rv d1"><span class="ln"></span><span data-en>Vision</span><span data-sr>Vizija</span></div>
+    <h2 class="stitle rv d2">
+      <span data-en>We Build<br>Tomorrow's<br>Infrastructure</span>
+      <span data-sr>Gradimo<br>Infrastrukturu<br>Sutrašnjice</span>
+    </h2>
+    <p class="sbody rv d3">
+      <span data-en>NEXUS architects digital ecosystems where technology flows as naturally as water — powerful, relentless, and shaping the landscape around it.</span>
+      <span data-sr>NEXUS gradi digitalne ekosisteme gde tehnologija teče prirodno kao voda — moćno, nezaustavljivo, oblikujući pejzaž oko sebe.</span>
+    </p>
+    <a href="#services" class="bg rv d4" style="margin-top:2.5rem;"><span data-en>Our Services</span><span data-sr>Naše Usluge</span></a>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- ══ STATS — 2a.png ══ -->
+<section class="sw stats" id="numbers">
+   <div class="sbg"><video autoplay muted loop playsinline><source src="video/ص.mp4" type="video/mp4"></video></div>
+  <div class="sov"></div>
+  <div class="sc2">
+    <div class="stag rv" style="justify-content:center;">
+      <span class="ln"></span><span data-en>By The Numbers</span><span data-sr>Naši Brojevi</span><span class="ln"></span>
+    </div>
+    <div class="sg">
+      <div class="sc3 rv d1">
+        <span class="sn" data-target="250">0</span><span class="ss">+</span>
+        <span class="sl2"><span data-en>Projects Delivered</span><span data-sr>Isporučenih Projekata</span></span>
+      </div>
+      <div class="sc3 rv d2">
+        <span class="sn" data-target="98">0</span><span class="ss">%</span>
+        <span class="sl2"><span data-en>Client Satisfaction</span><span data-sr>Zadovoljstvo Klijenata</span></span>
+      </div>
+      <div class="sc3 rv d3">
+        <span class="sn" data-target="12">0</span><span class="ss">yr</span>
+        <span class="sl2"><span data-en>Years of Excellence</span><span data-sr>Godina Izvrsnosti</span></span>
+      </div>
+      <div class="sc3 rv d4">
+        <span class="sn" data-target="40">0</span><span class="ss">+</span>
+        <span class="sl2"><span data-en>Global Partners</span><span data-sr>Globalnih Partnera</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- ══ SERVICES — 2.mp4 ══ -->
+<section class="sw services" id="services">
+  <div class="sbg"><video autoplay muted loop playsinline><source src="video/ص.mp4" type="video/mp4"></video></div>
+  <div class="sov"></div>
+  <div class="sc2">
+    <div class="sh">
+      <div class="stag rv" style="justify-content:center;">
+        <span class="ln"></span><span data-en>What We Do</span><span data-sr>Šta Radimo</span><span class="ln"></span>
+      </div>
+      <h2 class="stitle rv d2" style="text-align:center;-webkit-text-fill-color:var(--cream);background:none;font-size:clamp(1.8rem,4vw,3rem);">
+        <span data-en>Services</span><span data-sr>Usluge</span>
+      </h2>
+    </div>
+    <div class="svgrid">
+      <div class="svc rv d1"><span class="si2">⬡</span><div class="sn2"><span data-en>Digital Architecture</span><span data-sr>Digitalna Arhitektura</span></div><span class="sr2"><span data-en>Architecture · Design</span><span data-sr>Arhitektura · Dizajn</span></span><p class="sd"><span data-en>Scalable, resilient systems built for the demands of tomorrow's digital landscape.</span><span data-sr>Skalabilni sistemi izgrađeni za zahteve digitalnog pejzaža sutrašnjice.</span></p></div>
+      <div class="svc rv d2"><span class="si2">◈</span><div class="sn2"><span data-en>AI Integration</span><span data-sr>Integracija AI</span></div><span class="sr2"><span data-en>Machine Learning · NLP</span><span data-sr>Mašinsko Učenje · NLP</span></span><p class="sd"><span data-en>Embedding intelligence into every layer — from prediction to personalization.</span><span data-sr>Ugrađivanje inteligencije u svaki sloj — od predikcije do personalizacije.</span></p></div>
+      <div class="svc rv d3"><span class="si2">◎</span><div class="sn2"><span data-en>Brand Experience</span><span data-sr>Brendirano Iskustvo</span></div><span class="sr2"><span data-en>Identity · Motion</span><span data-sr>Identitet · Animacija</span></span><p class="sd"><span data-en>Immersive visual identities and interactions that forge lasting emotional connections.</span><span data-sr>Imerzivni vizuelni identiteti koji stvaraju trajne emocionalne veze.</span></p></div>
+      <div class="svc rv d4"><span class="si2">⬖</span><div class="sn2"><span data-en>Cloud Engineering</span><span data-sr>Cloud Inženjering</span></div><span class="sr2"><span data-en>Infrastructure · DevOps</span><span data-sr>Infrastruktura · DevOps</span></span><p class="sd"><span data-en>Distributed infrastructure, zero-downtime deployments, infrastructure-as-code.</span><span data-sr>Distribuirana infrastruktura, primenivanja bez zastoja, infrastruktura-kao-kod.</span></p></div>
+      <div class="svc rv d5"><span class="si2">⟁</span><div class="sn2"><span data-en>Data Intelligence</span><span data-sr>Podatkovna Inteligencija</span></div><span class="sr2"><span data-en>Analytics · Dashboards</span><span data-sr>Analitika · Kontrolne Table</span></span><p class="sd"><span data-en>Real-time dashboards and predictive analytics transforming raw data into strategy.</span><span data-sr>Kontrolne table u realnom vremenu i prediktivna analitika koji pretvaraju podatke u strategiju.</span></p></div>
+      <div class="svc rv d6"><span class="si2">⬚</span><div class="sn2"><span data-en>Security & Compliance</span><span data-sr>Bezbednost i Usklađenost</span></div><span class="sr2"><span data-en>Protection · Compliance</span><span data-sr>Zaštita · Usklađenost</span></span><p class="sd"><span data-en>Enterprise-grade protection, penetration testing, and regulatory compliance.</span><span data-sr>Korporativna zaštita, testiranje penetracije i regulatorna usklađenost.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- ══ PLATFORM — 3.mp4 ══ -->
+<section class="sw platform" id="platform">
+  <div class="sbg"><video autoplay muted loop playsinline><source src="video/3.mp4" type="video/mp4"></video></div>
+  <div class="sov"></div>
+  <div class="sc2 p-con">
+    <div class="stag rv d1"><span class="ln"></span><span data-en>Platform</span><span data-sr>Platforma</span></div>
+    <h2 class="stitle rv d2">
+      <span data-en>A New<br>Horizon<br>Awaits</span>
+      <span data-sr>Novi<br>Horizont<br>Čeka</span>
+    </h2>
+    <p class="sbody rv d3">
+      <span data-en>Beyond the threshold of what's known lies the architecture of the future — we've built the bridge to take you there.</span>
+      <span data-sr>Iza praga poznatog leži arhitektura budućnosti — izgradili smo most koji vas tamo vodi.</span>
+    </p>
+    <a href="#screenshot" class="bg rv d4" style="margin-top:2.5rem;"><span data-en>See Platform</span><span data-sr>Pogledaj Platformu</span></a>
+  </div>
+</section>
+
+<!-- ══ SCREENSHOT — Screenshot.png bg ══ -->
+<section class="sw ssec" id="screenshot">
+    <div class="sbg"><video autoplay muted loop playsinline><source src="video/33.mp4" type="video/mp4"></video></div>
+  <div class="sov"></div>
+  <div class="sc2 rvl">
+    <div class="stag"><span class="ln"></span><span data-en>Command Center</span><span data-sr>Komandni Centar</span></div>
+    <h2 class="stitle" style="-webkit-text-fill-color:var(--cream);background:none;font-size:2.5rem;">
+      <span data-en>The NEXUS<br>Command Center</span>
+      <span data-sr>NEXUS<br>Komandni Centar</span>
+    </h2>
+    <p class="sbody" style="margin-top:1.5rem;">
+      <span data-en>A unified operational hub — monitoring, analytics, and control in one breathtaking interface.</span>
+      <span data-sr>Jedinstveni operativni centar — praćenje, analitika i kontrola u jednom zadivljujućem interfejsu.</span>
+    </p>
+    <a href="#contact" class="bg" style="margin-top:2.5rem;"><span data-en>Request Demo</span><span data-sr>Zatražite Demo</span></a>
+  </div>
+  <div class="sc2 rvr">
+    <img src="video/23.png" class="ss-img" alt="NEXUS Platform">
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- ══ CONTACT — 4.mp4 ══ -->
+<section class="sw contact" id="contact">
+  <div class="sbg"><video autoplay muted loop playsinline><source src="video/4.mp4" type="video/mp4"></video></div>
+  <div class="sov"></div>
+  <div class="sc2">
+    <div class="stag rv" style="justify-content:center;margin-bottom:2rem;">
+      <span class="ln"></span><span data-en>Get In Touch</span><span data-sr>Stupite U Kontakt</span><span class="ln"></span>
+    </div>
+    <h2 class="ct rv d1">
+      <span data-en>Begin Your<br>Journey</span>
+      <span data-sr>Počnite Svoje<br>Putovanje</span>
+    </h2>
+    <p class="cs rv d2">
+      <span data-en>Ready to build the next chapter of your digital story?</span>
+      <span data-sr>Spremni da izgradite sledeće poglavlje vaše digitalne priče?</span>
+    </p>
+    <a href="mailto:hello@nexus.io" class="ce rv d3">hello@nexus.io</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 NEXUS</p>
+  <div class="fl">NEXUS</div>
+  <p><span data-en>All rights reserved</span><span data-sr>Sva prava zadržana</span></p>
+</footer>
+
+<script>
+// CURSOR
+const cur=document.getElementById('cur'),dot=document.getElementById('cur-dot'),trail=document.getElementById('cur-trail');
+let mx=0,my=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  dot.style.transform=`translate(${mx-2.5}px,${my-2.5}px)`;
+  cur.style.transform=`translate(${mx-9}px,${my-9}px)`;
+});
+setInterval(()=>{trail.style.transform=`translate(${mx-21}px,${my-21}px)`;},80);
+document.querySelectorAll('a,button,.svc,.sc3').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform+=' scale(1.9)';cur.style.borderColor='var(--orange)';});
+  el.addEventListener('mouseleave',()=>{cur.style.borderColor='var(--gold)';});
+});
+
+// NAV
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('sc',scrollY>80));
+
+// REVEAL
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.12,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>obs.observe(el));
+
+// COUNTERS
+const cobs=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target,target=+el.dataset.target,step=target/110;
+    let c=0;const t=setInterval(()=>{c+=step;if(c>=target){c=target;clearInterval(t);}el.textContent=Math.floor(c);},16);
+    cobs.unobserve(el);
+  });
+},{threshold:.5});
+document.querySelectorAll('.sn[data-target]').forEach(el=>cobs.observe(el));
+
+// PARALLAX
+window.addEventListener('scroll',()=>{
+  document.querySelectorAll('.hero .sbg video').forEach(v=>v.style.transform=`translateY(${scrollY*.3}px)`);
+});
+
+// LANGUAGE
+document.getElementById('ben').addEventListener('click',()=>{
+  document.body.classList.remove('sr');
+  document.getElementById('ben').classList.add('on');
+  document.getElementById('bsr').classList.remove('on');
+});
+document.getElementById('bsr').addEventListener('click',()=>{
+  document.body.classList.add('sr');
+  document.getElementById('bsr').classList.add('on');
+  document.getElementById('ben').classList.remove('on');
+});
+
+// PARTICLES
+const canvas=document.getElementById('ptc'),ctx=canvas.getContext('2d');
+let W,H;
+function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}
+resize();window.addEventListener('resize',resize);
+class P{
+  reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.r=Math.random()*1.4+.2;this.vx=(Math.random()-.5)*.35;this.vy=-Math.random()*.55-.08;this.op=Math.random()*.45+.1;this.life=0;this.max=Math.random()*180+80;this.c=Math.random()>.5?'212,168,83':'74,159,212';}
+  constructor(){this.reset();this.life=Math.random()*this.max;}
+  update(){this.x+=this.vx;this.y+=this.vy;this.life++;if(this.life>this.max||this.y<-5)this.reset();}
+  draw(){const t=this.life/this.max,a=this.op*(t<.1?t*10:t>.8?(1-t)*5:1);ctx.beginPath();ctx.arc(this.x,this.y,this.r,0,Math.PI*2);ctx.fillStyle=`rgba(${this.c},${a})`;ctx.fill();}
+}
+const pts=Array.from({length:130},()=>new P());
+(function loop(){ctx.clearRect(0,0,W,H);pts.forEach(p=>{p.update();p.draw();});requestAnimationFrame(loop);})();
+</script>
+</body>
+</html>
